@@ -5,6 +5,9 @@ baseurl: ""
 url: "https://powersene.io"
 cname: "powersene.io"
 
+# Use pretty URLs (permalinks without .html extension)
+permalink: pretty
+
 theme: minima
 plugins:
   - jekyll-feed
