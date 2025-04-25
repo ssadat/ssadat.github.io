@@ -1,0 +1,22 @@
+# Site settings
+title: "Powersense"
+description: "Consulting & Advanced Analytics for Tomorrow’s Grid"
+baseurl: ""
+url: "https://powersene.io"
+cname: "powersene.io"
+
+theme: minima
+plugins:
+  - jekyll-feed
+
+# Navigation
+enable_nav: true
+nav:
+  - title: "Home"
+    url: "/"
+  - title: "About"
+    url: "/about/"
+  - title: "Services"
+    url: "/services/"
+  - title: "Contact"
+    url: "/contact/"
