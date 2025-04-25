@@ -1,148 +1,75 @@
-/* Powersense brand colors */
 :root {
   --ps-navy: #00334e;
   --ps-teal-start: #005f67;
   --ps-teal-end: #008f87;
   --ps-text: #333333;
+  --ps-bg: #f8f8f8;
 }
 
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Roboto', sans-serif;
   margin: 0;
   padding: 0;
   color: var(--ps-text);
-  background: #f8f8f8;
+  background: var(--ps-bg);
 }
 
-/* Header */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
 .site-header {
   background: var(--ps-navy);
-  color: #fff;
   display: flex;
   align-items: center;
-  padding: 0.5rem 1rem;
+  padding: 0.75rem 1rem;
 }
 .site-logo {
-  height: 64px;    /* Increased logo height for better visibility */
+  height: 80px;
   width: auto;
   margin-right: 1rem;
 }
-.site-header h1 {
-  margin: 0;
-  font-size: 1.5rem;
-}
 nav ul {
   list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
 }
-nav li {
-  margin-left: 1rem;
-}
+nav li { margin-left: 1rem; }
 nav a {
   color: #fff;
   text-decoration: none;
+  font-weight: 500;
   transition: color 0.3s;
 }
-nav a:hover {
-  color: var(--ps-teal-end);
-}
+nav a:hover { color: var(--ps-teal-end); }
 
-/* Cover image on home page */
 .cover {
   width: 100%;
-  height: 300px;
+  height: 250px;
   background: url('{{ '/assets/images/cover.jpg' | relative_url }}') center/cover no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.cover h2 {
+.cover-title {
   color: #fff;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+  font-size: 2rem;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.6);
 }
 
-/* Main content */
 .content {
-  padding: 2rem;
   background: #fff;
-  max-width: 900px;
-  margin: 1rem auto;
+  padding: 2rem;
+  margin: 2rem 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
-/* Footer */
 .site-footer {
   background: var(--ps-navy);
-  color: #fff;
-  text-align: center;
-  padding: 1rem;
-}
-```css
-/* Global */
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  color: #333;
-  background: #f8f8f8;
-}
-
-/* Header */
-.site-header {
-  background: #00334e;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  padding: 0.5rem 1rem;
-}
-.site-logo {
-  height: 48px;
-  margin-right: 1rem;
-}
-.site-header h1 {
-  margin: 0;
-  font-size: 1.5rem;
-}
-nav ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-}
-nav li {
-  margin-left: 1rem;
-}
-nav a {
-  color: #fff;
-  text-decoration: none;
-}
-
-/* Cover image on home page */
-.cover {
-  width: 100%;
-  height: 300px;
-  background: url('{{ '/assets/images/cover.jpg' | relative_url }}') center/cover no-repeat;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.cover h2 {
-  color: #fff;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.6);
-}
-
-/* Main content */
-.content {
-  padding: 2rem;
-  background: #fff;
-  max-width: 900px;
-  margin: 1rem auto;
-}
-
-/* Footer */
-.site-footer {
-  background: #00334e;
   color: #fff;
   text-align: center;
   padding: 1rem;
