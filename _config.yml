@@ -18,7 +18,7 @@ nav:
   - title: "Home"
     url: "/"
   - title: "About"
-    url: "/about.md/"
+    url: "/about/"
   - title: "Services"
     url: "/services/"
   - title: "Contact"
