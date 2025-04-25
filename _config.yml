@@ -4,15 +4,13 @@ description: "Consulting & Advanced Analytics for Tomorrow’s Grid"
 baseurl: ""
 url: "https://powersene.io"
 cname: "powersene.io"
-
-# Use pretty URLs (permalinks without .html extension)
 permalink: pretty
 
+# Theme & plugins
 theme: minima
 plugins:
   - jekyll-feed
 
-# Navigation
 enable_nav: true
 nav:
   - title: "Home"
