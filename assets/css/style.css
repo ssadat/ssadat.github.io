@@ -23,7 +23,8 @@ body {
   padding: 0.5rem 1rem;
 }
 .site-logo {
-  height: 48px;
+  height: 64px;    /* Increased logo height for better visibility */
+  width: auto;
   margin-right: 1rem;
 }
 .site-header h1 {
