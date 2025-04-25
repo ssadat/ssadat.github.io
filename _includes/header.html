@@ -1,0 +1,17 @@
+<header class="site-header">
+  <div class="container">
+    <a href="{{ '/' | relative_url }}">
+      <img src="{{ '/assets/images/logo.png' | relative_url }}" alt="Powersense logo" class="site-logo">
+    </a>
+    <h1><a href="{{ '/' | relative_url }}">{{ site.title }}</a></h1>
+    {% if site.enable_nav %}
+    <nav>
+      <ul>
+        {% for link in site.nav %}
+          <li><a href="{{ link.url | relative_url }}">{{ link.title }}</a></li>
+        {% endfor %}
+      </ul>
+    </nav>
+    {% endif %}
+  </div>
+</header>
