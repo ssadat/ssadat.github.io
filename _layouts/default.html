@@ -4,13 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ page.title }} | {{ site.title }}</title>
-  <link rel="icon" href="{{ '/assets/images/favicon.ico' | relative_url }}" type="image/x-icon">
+  <link rel="icon" href="{{ '/assets/images/favicon.ico' | relative_url }}">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
 </head>
 <body>
   {% include header.html %}
 
-  <main class="content">
+  {% if page.url == "/" %}
+  <section class="cover">
+    <h2 class="cover-title">{{ page.cover_title }}</h2>
+  </section>
+  {% endif %}
+
+  <main class="content container">
     {{ content }}
   </main>
 
