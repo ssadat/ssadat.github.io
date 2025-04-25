@@ -5,19 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ page.title }} | {{ site.title }}</title>
   <link rel="icon" href="{{ '/assets/images/favicon.ico' | relative_url }}">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
 </head>
 <body>
   {% include header.html %}
 
   {% if page.url == "/" %}
-  <section class="cover">
-    <h2 class="cover-title">{{ page.cover_title }}</h2>
-  </section>
+    <section class="hero">
+      <div class="hero-overlay"></div>
+      <div class="container hero-content">
+        <h1>{{ page.hero_title }}</h1>
+        <p>{{ page.hero_subtitle }}</p>
+        <a href="{{ page.hero_cta_url }}" class="btn-primary">{{ page.hero_cta_text }}</a>
+      </div>
+    </section>
   {% endif %}
 
-  <main class="content container">
+  <main class="container content">
     {{ content }}
   </main>
 
