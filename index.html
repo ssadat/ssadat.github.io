@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sayed Abdullah Sadat — Computational tools for power systems</title>
+<meta name="description" content="Sayed Abdullah Sadat builds computational tools for power systems — spanning power markets, transmission operations and planning, and active distribution networks, powered by numerical optimization, high-performance computing, and AI.">
+<link rel="canonical" href="https://www.sayedsadat.com/">
+<meta property="og:title" content="Sayed Abdullah Sadat">
+<meta property="og:description" content="Computational tools for power systems — markets, transmission, and active distribution.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.sayedsadat.com/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Sayed Abdullah Sadat",
+  "url": "https://www.sayedsadat.com/",
+  "jobTitle": "Power Systems Researcher & Software Developer",
+  "alumniOf": [
+    {"@type":"CollegeOrUniversity","name":"The University of Utah"},
+    {"@type":"CollegeOrUniversity","name":"University of South Florida"},
+    {"@type":"CollegeOrUniversity","name":"Osmania University"}
+  ],
+  "knowsAbout": ["Power systems","Optimal power flow","Electricity markets","Numerical optimization","High-performance computing","Transmission planning","Distributed energy resources"],
+  "sameAs": ["https://github.com/sasadat","https://www.linkedin.com/in/sasadat","https://www.powersense.io"]
+}
+</script>
+<style>
+:root{
+  --ink:#1b1d21;          /* graphite */
+  --ink-soft:#4a4e57;     /* annotation gray */
+  --porcelain:#f3f4f1;    /* insulator porcelain */
+  --panel:#ffffff;
+  --line:#d9dbd4;         /* hairline steel */
+  --corona:#3d4ed0;       /* corona indigo — the accent */
+  --corona-dim:#aeb5ec;
+  --copper:#a05f2c;       /* conductor copper — small marks only */
+  --radius:6px;
+  --measure:66ch;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+body{
+  background:var(--porcelain);
+  color:var(--ink);
+  font-family:"Source Serif 4",Georgia,serif;
+  font-size:17px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--corona);color:#fff}
+a{color:var(--corona);text-decoration:none;border-bottom:1px solid var(--corona-dim)}
+a:hover{border-bottom-color:var(--corona)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--corona);outline-offset:3px;border-radius:2px}
+
+.wrap{max-width:960px;margin:0 auto;padding:0 24px}
+
+/* ---------- header ---------- */
+header{
+  border-bottom:1px solid var(--line);
+  background:var(--porcelain);
+  position:sticky;top:0;z-index:10;
+}
+.nav{
+  display:flex;align-items:baseline;justify-content:space-between;
+  padding:14px 0;gap:16px;flex-wrap:wrap;
+}
+.brand{
+  font-family:"Archivo",sans-serif;
+  font-variation-settings:"wdth" 110;
+  font-weight:700;font-size:15px;letter-spacing:.02em;
+  color:var(--ink);border-bottom:none;
+}
+.nav ul{display:flex;gap:22px;list-style:none}
+.nav ul a{
+  font-family:"JetBrains Mono",monospace;font-size:12.5px;
+  color:var(--ink-soft);border-bottom:none;
+}
+.nav ul a:hover{color:var(--corona)}
+
+/* ---------- hero: single-line diagram as signature ---------- */
+.hero{padding:72px 0 56px;border-bottom:1px solid var(--line)}
+.kicker{
+  font-family:"JetBrains Mono",monospace;font-size:12.5px;
+  color:var(--copper);letter-spacing:.06em;text-transform:uppercase;
+  margin-bottom:18px;
+}
+h1{
+  font-family:"Archivo",sans-serif;
+  font-variation-settings:"wdth" 118;
+  font-weight:750;
+  font-size:clamp(34px,5.4vw,58px);
+  line-height:1.04;letter-spacing:-.015em;
+  max-width:16ch;
+}
+h1 .em{color:var(--corona)}
+.hero p.lede{
+  margin-top:22px;max-width:var(--measure);
+  font-size:19px;color:var(--ink-soft);
+}
+.sld{margin:44px 0 6px;display:block;width:100%;height:auto}
+.sld text{font-family:"JetBrains Mono",monospace;font-size:11px;fill:var(--ink-soft)}
+.sld .bus{stroke:var(--ink);stroke-width:3}
+.sld .branch{stroke:var(--ink-soft);stroke-width:1.25;fill:none}
+.sld .branch.hot{stroke:var(--corona);stroke-dasharray:5 4;animation:flow 2.4s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-18}}
+.sld .node{fill:var(--corona)}
+.sld .src{fill:none;stroke:var(--copper);stroke-width:1.5}
+
+/* affiliations strip */
+.affil{
+  margin-top:34px;padding-top:18px;border-top:1px solid var(--line);
+  display:flex;flex-wrap:wrap;gap:10px 26px;align-items:baseline;
+  font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--ink-soft);
+}
+.affil-label{color:var(--copper);letter-spacing:.06em;text-transform:uppercase;font-size:11px}
+
+/* ---------- sections ---------- */
+section{padding:60px 0;border-bottom:1px solid var(--line)}
+.sec-label{
+  font-family:"JetBrains Mono",monospace;font-size:12.5px;
+  color:var(--corona);letter-spacing:.06em;text-transform:uppercase;
+  margin-bottom:26px;
+}
+h2{
+  font-family:"Archivo",sans-serif;font-variation-settings:"wdth" 112;
+  font-weight:700;font-size:clamp(24px,3.2vw,32px);
+  letter-spacing:-.01em;margin-bottom:18px;
+}
+h3{
+  font-family:"Archivo",sans-serif;font-variation-settings:"wdth" 108;
+  font-weight:650;font-size:18px;margin-bottom:6px;
+}
+p{max-width:var(--measure)}
+p + p{margin-top:14px}
+
+/* domain grid */
+.domains{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin-top:8px}
+.domain{background:var(--panel);padding:26px 22px}
+.domain h3{color:var(--ink)}
+.domain p{font-size:15.5px;color:var(--ink-soft)}
+.methods{
+  margin-top:26px;display:flex;flex-wrap:wrap;gap:10px;
+}
+.methods span{
+  font-family:"JetBrains Mono",monospace;font-size:12.5px;
+  border:1px solid var(--line);background:var(--panel);
+  padding:6px 12px;border-radius:999px;color:var(--ink-soft);
+}
+
+/* tools */
+.tool{
+  display:grid;grid-template-columns:170px 1fr;gap:22px;
+  padding:26px 0;border-top:1px solid var(--line);
+}
+.tool:first-of-type{border-top:none;padding-top:8px}
+.tool .meta{
+  font-family:"JetBrains Mono",monospace;font-size:12.5px;color:var(--ink-soft);
+  display:flex;flex-direction:column;gap:6px;
+}
+.tool .meta .tag{color:var(--copper)}
+.tool p{font-size:15.5px;color:var(--ink-soft);max-width:60ch}
+.tool h3 a{color:var(--ink);border-bottom-color:transparent}
+.tool h3 a:hover{color:var(--corona);border-bottom-color:var(--corona-dim)}
+
+/* experience */
+.xp{list-style:none}
+.xp li{
+  display:grid;grid-template-columns:170px 1fr;gap:22px;
+  padding:18px 0;border-top:1px solid var(--line);
+}
+.xp li:first-child{border-top:none}
+.xp .when{font-family:"JetBrains Mono",monospace;font-size:12.5px;color:var(--ink-soft);padding-top:3px}
+.xp .role{font-family:"Archivo",sans-serif;font-weight:650;font-size:16.5px}
+.xp .org{color:var(--ink-soft);font-size:15.5px}
+
+/* background */
+.creds{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:8px}
+.creds ul{list-style:none}
+.creds li{padding:10px 0;border-top:1px solid var(--line);font-size:15.5px;color:var(--ink-soft)}
+.creds li:first-child{border-top:none}
+.creds li strong{color:var(--ink);font-weight:600}
+.creds h3{margin-bottom:10px}
+
+/* research */
+.research p{color:var(--ink-soft)}
+.research .links{margin-top:18px;display:flex;gap:14px;flex-wrap:wrap}
+.btn{
+  display:inline-block;font-family:"JetBrains Mono",monospace;font-size:13px;
+  border:1px solid var(--ink);border-radius:var(--radius);
+  padding:10px 16px;color:var(--ink);border-bottom-width:1px;
+}
+.btn:hover{background:var(--ink);color:var(--porcelain)}
+.btn.primary{background:var(--corona);border-color:var(--corona);color:#fff}
+.btn.primary:hover{background:#3243b8}
+
+/* footer */
+footer{padding:48px 0 64px}
+footer .foot{
+  display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
+  font-size:14.5px;color:var(--ink-soft);
+}
+footer a{color:var(--ink)}
+footer .mono{font-family:"JetBrains Mono",monospace;font-size:12.5px}
+
+@media (max-width:760px){
+  .domains{grid-template-columns:1fr}
+  .tool,.xp li{grid-template-columns:1fr;gap:6px}
+  .creds{grid-template-columns:1fr}
+  .nav ul{gap:14px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top">SAYED ABDULLAH SADAT</a>
+    <ul>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#tools">Tools</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#research">Research</a></li>
+      <li><a href="#contact">Connect</a></li>
+    </ul>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="wrap">
+      <div class="kicker">Power systems · computation · software</div>
+      <h1>I build the <span class="em">computational tools</span> that power systems work runs on.</h1>
+      <p class="lede">Power markets, the transmission physics beneath them, and the DER-rich grid edge — unblocked with numerical optimization, high-performance computing, cloud infrastructure, and AI.</p>
+
+      <!-- signature: single-line diagram of the three domains -->
+      <svg class="sld" viewBox="0 0 900 150" role="img" aria-label="Single-line diagram connecting optimization and computing methods to power markets, transmission, and distribution">
+        <!-- source -->
+        <circle class="src" cx="60" cy="75" r="16"/>
+        <path class="src" d="M52 75 q4 -8 8 0 q4 8 8 0"/>
+        <text x="34" y="112">methods</text>
+        <!-- feeder to bus -->
+        <path class="branch hot" d="M76 75 H 200"/>
+        <!-- main bus -->
+        <line class="bus" x1="200" y1="20" x2="200" y2="130"/>
+        <!-- branches to three domains -->
+        <path class="branch hot" d="M200 40 H 430"/>
+        <path class="branch hot" d="M200 75 H 430"/>
+        <path class="branch hot" d="M200 110 H 430"/>
+        <!-- domain buses -->
+        <line class="bus" x1="430" y1="28" x2="430" y2="52"/>
+        <line class="bus" x1="430" y1="63" x2="430" y2="87"/>
+        <line class="bus" x1="430" y1="98" x2="430" y2="122"/>
+        <circle class="node" cx="430" cy="40" r="3.5"/>
+        <circle class="node" cx="430" cy="75" r="3.5"/>
+        <circle class="node" cx="430" cy="110" r="3.5"/>
+        <text x="446" y="44">power markets — bidding, clearing, congestion</text>
+        <text x="446" y="79">transmission — operations &amp; planning</text>
+        <text x="446" y="114">grid edge — microgrids, DERs &amp; VPPs</text>
+      </svg>
+
+      <div class="affil" aria-label="Institutional background">
+        <span class="affil-label">Trained &amp; worked at</span>
+        <span>Argonne National Laboratory</span>
+        <span>U.S. DOE ARPA-E (GO Competition)</span>
+        <span>Fulbright Program</span>
+        <span>University of California San Diego</span>
+        <span>The University of Utah</span>
+        <span>University of South Florida</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHAT I DO -->
+  <section id="work">
+    <div class="wrap">
+      <div class="sec-label">01 — What I work on</div>
+      <h2>Research and development, in service of working software</h2>
+      <p>My focus is the gap between what power systems research knows and what practitioners can actually run. I take methods from optimization, operations research, and machine learning and turn them into engines — power flow, contingency analysis, market simulation, network-model tooling — that are fast enough, scalable enough, and dependable enough to carry commercial decisions.</p>
+      <p>Increasingly, my work sits a layer above the engines: designing <strong>decision systems</strong> for problems that unfold under uncertainty. That means physics-based scenario simulation as the foundation, stochastic optimization and sequential decision modeling as the architecture, and AI applied where it genuinely earns its place — forecasting the inputs and correcting the residuals — rather than replacing the physics. The goal is the same across markets, operations, and planning: turn a hard, uncertain problem into a repeatable, auditable pipeline that decision-makers can trust.</p>
+      <div class="domains" style="margin-top:30px">
+        <div class="domain">
+          <h3>Power markets</h3>
+          <p>My deepest domain. Market clearing, congestion analysis, CRR/FTR and virtual markets, and optimal bidding — grounded in physics-based network models rather than price series alone.</p>
+        </div>
+        <div class="domain">
+          <h3>Transmission systems</h3>
+          <p>The physics under the markets, and a practice in its own right: N-1 contingency screening, transfer capability and deliverability, interconnection studies, and security-constrained scheduling at interconnection scale.</p>
+        </div>
+        <div class="domain">
+          <h3>The grid edge</h3>
+          <p>A supporting thread from my Argonne and postdoc years: voltage regulation in microgrids, DERs, and VPPs — increasingly what transmission studies and market models must account for.</p>
+        </div>
+      </div>
+      <div class="methods" aria-label="Methods and stack">
+        <span>numerical optimization</span><span>stochastic &amp; sequential decision modeling</span><span>scenario simulation</span><span>parallel &amp; HPC</span><span>cloud-scale execution</span><span>ML for forecasting &amp; residual correction</span><span>Julia</span><span>Python</span><span>C++</span><span>Gurobi · IPOPT · MOSEK</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOOLS -->
+  <section id="tools">
+    <div class="wrap">
+      <div class="sec-label">02 — Selected tools &amp; projects</div>
+      <h2>Things I've built</h2>
+
+      <div class="tool">
+        <div class="meta"><span>2024 — present</span><span class="tag">commercial · Python</span></div>
+        <div>
+          <h3><a href="https://www.powersense.io/psflow.html">PsFlow — transmission study automation</a></h3>
+          <p>A scriptable Python engine for DC-linearized contingency screening, transfer limits, and worst-case transfer limits, with PSS/E-compatible I/O and parallel scenario batching. Built and benchmarked for parity with leading commercial tools; the flagship product of Powersense, the independent software company I founded.</p>
+        </div>
+      </div>
+
+      <div class="tool">
+        <div class="meta"><span>2022 — present</span><span class="tag">proprietary · production</span></div>
+        <div>
+          <h3>Industrial power flow &amp; market analytics engine</h3>
+          <p>Led development of an in-house power flow platform for modeling power outcomes in wholesale markets — achieving a 150× speedup in fundamental power flow computation and higher accuracy in identifying congestion-driving outages than established commercial alternatives. Includes state estimation, SCUC/ED, and market-clearing simulation.</p>
+        </div>
+      </div>
+
+      <div class="tool">
+        <div class="meta"><span>2022 — present</span><span class="tag">proprietary · data infrastructure</span></div>
+        <div>
+          <h3>ISO network-model ingestion at scale</h3>
+          <p>Scalable CIM parsing and node-breaker to bus-branch conversion across every major U.S. ISO (ERCOT, MISO, PJM, SPP), replacing workflows that previously depended on Siemens PSS®ODMS — with greater flexibility and throughput.</p>
+        </div>
+      </div>
+
+      <div class="tool">
+        <div class="meta"><span>2020 — 2022</span><span class="tag">open source · Julia</span></div>
+        <div>
+          <h3>ActiveSetMethods.jl — nonlinear optimization solver</h3>
+          <p>A Julia continuous nonlinear solver using a sequential linear programming line-search algorithm, developed at Argonne National Laboratory and applied to AC optimal power flow.</p>
+        </div>
+      </div>
+
+      <div class="tool">
+        <div class="meta"><span>2017 — 2022</span><span class="tag">research · ARPA-E</span></div>
+        <div>
+          <h3>Grid Optimization Competition solvers</h3>
+          <p>Computational algorithms for Challenges 1 and 2 of the U.S. Department of Energy's ARPA-E Grid Optimization Competition — security-constrained optimal power flow under competition-scale time and accuracy constraints.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="wrap">
+      <div class="sec-label">03 — Experience</div>
+      <h2>Where I've done it</h2>
+      <ul class="xp">
+        <li>
+          <span class="when">2022 — present</span>
+          <span><span class="role">Investment Engineer Associate, Powerflow Systems</span><br><span class="org">Alphataraxia Management LP — power flow modeling and analytics for speculative wholesale power trading</span></span>
+        </li>
+        <li>
+          <span class="when">2024 — present</span>
+          <span><span class="role">Founder &amp; Principal</span><br><span class="org">Powersense — independent power-systems software; transmission planning and interconnection study consulting</span></span>
+        </li>
+        <li>
+          <span class="when">2025</span>
+          <span><span class="role">Postdoctoral Scholar, Mechanical &amp; Aerospace Engineering</span><br><span class="org">University of California San Diego — voltage regulation in microgrids, DERs, and virtual power plants</span></span>
+        </li>
+        <li>
+          <span class="when">2020 — 2022</span>
+          <span><span class="role">Wallace Givens Associate</span><br><span class="org">Argonne National Laboratory, Mathematics &amp; Computer Science Division — high-DER distribution systems, T&amp;D co-optimization, nonlinear solvers</span></span>
+        </li>
+        <li>
+          <span class="when">2017 — 2022</span>
+          <span><span class="role">Graduate Research &amp; Teaching Assistant</span><br><span class="org">The University of Utah — Ph.D. in Electrical &amp; Computer Engineering; computationally tractable optimal power flow</span></span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- BACKGROUND -->
+  <section id="background">
+    <div class="wrap">
+      <div class="sec-label">04 — Background</div>
+      <h2>Education &amp; recognition</h2>
+      <div class="creds">
+        <div>
+          <h3>Education</h3>
+          <ul>
+            <li><strong>Ph.D., Electrical &amp; Computer Engineering</strong> — The University of Utah (4.0). Dissertation: <em>Towards Computationally Tractable Optimal Power Flow</em></li>
+            <li><strong>M.S., Electrical Engineering</strong> — University of South Florida (4.0). Thesis on optimal bidding via mixed-integer programming</li>
+            <li><strong>B.E., Electrical &amp; Electronics Engineering</strong> — Osmania University</li>
+            <li><strong>Micro MBA</strong> — University of California San Diego · <strong>PMP®</strong> certified</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Honors</h3>
+          <ul>
+            <li><strong>Fulbright Scholarship</strong> — U.S. Department of State</li>
+            <li><strong>Golden Bull Award</strong> — University of South Florida's highest honor for academics, leadership, and service</li>
+            <li><strong>Engineering Student of the Year</strong> — IEEE Florida West Coast Section</li>
+            <li>Member — IEEE (2012–) · SIAM (2021–)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESEARCH -->
+  <section id="research" class="research">
+    <div class="wrap">
+      <div class="sec-label">05 — Research &amp; writing</div>
+      <h2>Publications</h2>
+      <p>My research sits at the intersection of power engineering, operations research, economics, and high-performance computing — with an emphasis on optimal power flow tractability, market design, and DER integration. The complete, always-current list lives on Google Scholar; the tools above are where the research goes to work.</p>
+      <div class="links">
+        <a class="btn primary" href="https://scholar.google.com/citations?user=YOUR_SCHOLAR_ID">Google Scholar →</a>
+        <a class="btn" href="https://github.com/sasadat">GitHub</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT / FOOTER -->
+  <footer id="contact">
+    <div class="wrap foot">
+      <div>
+        <strong>Sayed Abdullah Sadat</strong><br>
+        <span class="mono"><a href="https://www.linkedin.com/in/sasadat">linkedin/sasadat</a> · <a href="https://github.com/sasadat">github/sasadat</a></span>
+      </div>
+      <div class="mono" style="text-align:right">
+        © 2026 Sayed Abdullah Sadat<br>
+        <a href="https://www.powersense.io">powersense.io</a>
+      </div>
+    </div>
+  </footer>
+
+</main>
+</body>
+</html>
