@@ -4,15 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sayed Abdullah Sadat — Computational tools for power systems</title>
-<meta name="description" content="Sayed Abdullah Sadat builds computational tools for power systems — spanning power markets, transmission operations and planning, and active distribution networks, powered by numerical optimization, high-performance computing, and AI.">
+<meta name="description" content="Sayed Abdullah Sadat builds computational tools for power systems — spanning power markets, transmission operations and planning, and the DER-rich grid edge, powered by numerical optimization, high-performance computing, and AI.">
 <link rel="canonical" href="https://www.sayedsadat.com/">
 <meta property="og:title" content="Sayed Abdullah Sadat">
-<meta property="og:description" content="Computational tools for power systems — markets, transmission, and active distribution.">
+<meta property="og:description" content="Computational tools for power systems — markets, transmission, and the grid edge.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.sayedsadat.com/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -31,15 +31,17 @@
 </script>
 <style>
 :root{
-  --ink:#1b1d21;          /* graphite */
-  --ink-soft:#4a4e57;     /* annotation gray */
-  --porcelain:#f3f4f1;    /* insulator porcelain */
-  --panel:#ffffff;
-  --line:#d9dbd4;         /* hairline steel */
-  --corona:#3d4ed0;       /* corona indigo — the accent */
-  --corona-dim:#aeb5ec;
-  --copper:#a05f2c;       /* conductor copper — small marks only */
-  --radius:6px;
+  --bg:#101214;            /* graphite night */
+  --bg-raise:#16191d;      /* raised panel */
+  --bg-card:#1a1e23;       /* card */
+  --ink:#eceef0;           /* near-white */
+  --ink-soft:#9aa2ad;      /* muted */
+  --hair:rgba(236,238,240,.09);
+  --amber:#f6b23c;         /* HV amber — primary accent */
+  --amber-dim:rgba(246,178,60,.35);
+  --amber-glow:rgba(246,178,60,.12);
+  --sky:#7fb4e8;           /* faint auxiliary for diagram nodes */
+  --radius:10px;
   --measure:66ch;
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -49,173 +51,215 @@ html{scroll-behavior:smooth}
   *,*::before,*::after{animation:none!important;transition:none!important}
 }
 body{
-  background:var(--porcelain);
+  background:var(--bg);
   color:var(--ink);
-  font-family:"Source Serif 4",Georgia,serif;
-  font-size:17px;
-  line-height:1.65;
+  font-family:"Inter",system-ui,sans-serif;
+  font-size:16px;line-height:1.7;
   -webkit-font-smoothing:antialiased;
 }
-::selection{background:var(--corona);color:#fff}
-a{color:var(--corona);text-decoration:none;border-bottom:1px solid var(--corona-dim)}
-a:hover{border-bottom-color:var(--corona)}
-a:focus-visible,button:focus-visible{outline:2px solid var(--corona);outline-offset:3px;border-radius:2px}
+/* faint engineering dot-grid across the whole page */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:radial-gradient(rgba(236,238,240,.045) 1px, transparent 1px);
+  background-size:26px 26px;
+}
+main,header,footer{position:relative;z-index:1}
+::selection{background:var(--amber);color:#101214}
+a{color:var(--amber);text-decoration:none}
+a:hover{text-decoration:underline;text-underline-offset:3px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--amber);outline-offset:3px;border-radius:3px}
 
-.wrap{max-width:960px;margin:0 auto;padding:0 24px}
+.wrap{max-width:1060px;margin:0 auto;padding:0 28px}
 
 /* ---------- header ---------- */
 header{
-  border-bottom:1px solid var(--line);
-  background:var(--porcelain);
-  position:sticky;top:0;z-index:10;
+  position:sticky;top:0;z-index:20;
+  background:rgba(16,18,20,.82);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--hair);
 }
-.nav{
-  display:flex;align-items:baseline;justify-content:space-between;
-  padding:14px 0;gap:16px;flex-wrap:wrap;
-}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:16px 0;gap:16px;flex-wrap:wrap}
 .brand{
-  font-family:"Archivo",sans-serif;
-  font-variation-settings:"wdth" 110;
-  font-weight:700;font-size:15px;letter-spacing:.02em;
-  color:var(--ink);border-bottom:none;
+  font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:500;
+  letter-spacing:.08em;color:var(--ink);
 }
-.nav ul{display:flex;gap:22px;list-style:none}
+.brand:hover{text-decoration:none;color:var(--amber)}
+.brand .tick{color:var(--amber)}
+.nav ul{display:flex;gap:26px;list-style:none}
 .nav ul a{
-  font-family:"JetBrains Mono",monospace;font-size:12.5px;
-  color:var(--ink-soft);border-bottom:none;
+  font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.04em;
+  color:var(--ink-soft);
 }
-.nav ul a:hover{color:var(--corona)}
+.nav ul a:hover{color:var(--amber);text-decoration:none}
 
-/* ---------- hero: single-line diagram as signature ---------- */
-.hero{padding:72px 0 56px;border-bottom:1px solid var(--line)}
-.kicker{
-  font-family:"JetBrains Mono",monospace;font-size:12.5px;
-  color:var(--copper);letter-spacing:.06em;text-transform:uppercase;
-  margin-bottom:18px;
+/* ---------- hero ---------- */
+.hero{padding:96px 0 72px;overflow:hidden;position:relative}
+.hero::after{ /* soft amber field behind the diagram */
+  content:"";position:absolute;right:-160px;top:40px;width:560px;height:560px;
+  background:radial-gradient(closest-side, var(--amber-glow), transparent 70%);
+  pointer-events:none;
 }
+.kicker{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--amber);margin-bottom:26px;
+}
+.kicker::before{content:"";width:34px;height:1px;background:var(--amber)}
 h1{
   font-family:"Archivo",sans-serif;
-  font-variation-settings:"wdth" 118;
-  font-weight:750;
-  font-size:clamp(34px,5.4vw,58px);
-  line-height:1.04;letter-spacing:-.015em;
-  max-width:16ch;
+  font-variation-settings:"wdth" 116;
+  font-weight:700;
+  font-size:clamp(38px,6vw,68px);
+  line-height:1.02;letter-spacing:-.02em;
+  max-width:17ch;
 }
-h1 .em{color:var(--corona)}
-.hero p.lede{
-  margin-top:22px;max-width:var(--measure);
-  font-size:19px;color:var(--ink-soft);
+h1 .em{color:var(--amber)}
+.hero .lede{
+  margin-top:26px;max-width:60ch;
+  font-size:18px;color:var(--ink-soft);
 }
-.sld{margin:44px 0 6px;display:block;width:100%;height:auto}
-.sld text{font-family:"JetBrains Mono",monospace;font-size:11px;fill:var(--ink-soft)}
-.sld .bus{stroke:var(--ink);stroke-width:3}
-.sld .branch{stroke:var(--ink-soft);stroke-width:1.25;fill:none}
-.sld .branch.hot{stroke:var(--corona);stroke-dasharray:5 4;animation:flow 2.4s linear infinite}
-@keyframes flow{to{stroke-dashoffset:-18}}
-.sld .node{fill:var(--corona)}
-.sld .src{fill:none;stroke:var(--copper);stroke-width:1.5}
+.btn{
+  display:inline-block;font-family:"JetBrains Mono",monospace;font-size:13px;
+  padding:11px 18px;border-radius:8px;border:1px solid var(--hair);
+  color:var(--ink);background:transparent;
+  transition:border-color .18s;
+}
+.btn:hover{text-decoration:none;border-color:var(--amber)}
+.btn.primary{border-color:var(--amber-dim);color:var(--amber)}
+.btn.primary:hover{border-color:var(--amber)}
 
-/* affiliations strip */
-.affil{
-  margin-top:34px;padding-top:18px;border-top:1px solid var(--line);
-  display:flex;flex-wrap:wrap;gap:10px 26px;align-items:baseline;
-  font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--ink-soft);
+/* single-line diagram */
+.sld-frame{
+  margin-top:64px;border:1px solid var(--hair);border-radius:var(--radius);
+  background:linear-gradient(180deg, var(--bg-raise), var(--bg));
+  padding:30px 26px 20px;position:relative;
 }
-.affil-label{color:var(--copper);letter-spacing:.06em;text-transform:uppercase;font-size:11px}
+.sld-frame .frame-label{
+  position:absolute;top:-9px;left:22px;padding:0 10px;
+  background:var(--bg);font-family:"JetBrains Mono",monospace;
+  font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);
+}
+.sld{display:block;width:100%;height:auto}
+.sld text{font-family:"JetBrains Mono",monospace;font-size:11.5px;fill:var(--ink-soft)}
+.sld text.hl{fill:var(--ink)}
+.sld .bus{stroke:var(--ink);stroke-width:3}
+.sld .branch{stroke:rgba(236,238,240,.28);stroke-width:1.25;fill:none}
+.sld .branch.hot{stroke:var(--amber);stroke-width:1.5;stroke-dasharray:5 5;animation:flow 2.2s linear infinite;filter:drop-shadow(0 0 4px var(--amber-dim))}
+@keyframes flow{to{stroke-dashoffset:-20}}
+.sld .node{fill:var(--sky)}
+.sld .src{fill:none;stroke:var(--amber);stroke-width:1.5}
+
+/* affiliations strip — nameplate badges */
+.affil{
+  margin-top:26px;
+  display:flex;flex-wrap:wrap;gap:10px;align-items:center;
+}
+.affil-label{
+  font-family:"JetBrains Mono",monospace;color:var(--amber);
+  letter-spacing:.1em;text-transform:uppercase;font-size:11px;
+  margin-right:8px;
+}
+.affil .plate{
+  font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--ink-soft);
+  border:1px solid var(--hair);background:var(--bg-raise);
+  padding:8px 14px;border-radius:6px;
+  transition:border-color .2s,color .2s;
+}
+.affil .plate:hover{border-color:var(--amber-dim);color:var(--ink)}
 
 /* ---------- sections ---------- */
-section{padding:60px 0;border-bottom:1px solid var(--line)}
-.sec-label{
-  font-family:"JetBrains Mono",monospace;font-size:12.5px;
-  color:var(--corona);letter-spacing:.06em;text-transform:uppercase;
-  margin-bottom:26px;
+section{padding:88px 0;border-top:1px solid var(--hair)}
+.sec-head{display:flex;align-items:baseline;gap:20px;margin-bottom:14px}
+.sec-num{
+  font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--amber);
 }
 h2{
   font-family:"Archivo",sans-serif;font-variation-settings:"wdth" 112;
-  font-weight:700;font-size:clamp(24px,3.2vw,32px);
-  letter-spacing:-.01em;margin-bottom:18px;
+  font-weight:650;font-size:clamp(26px,3.4vw,38px);letter-spacing:-.015em;
 }
 h3{
-  font-family:"Archivo",sans-serif;font-variation-settings:"wdth" 108;
-  font-weight:650;font-size:18px;margin-bottom:6px;
+  font-family:"Archivo",sans-serif;font-variation-settings:"wdth" 106;
+  font-weight:600;font-size:18px;
 }
-p{max-width:var(--measure)}
-p + p{margin-top:14px}
+section > .wrap > p, .prose p{max-width:var(--measure);color:var(--ink-soft)}
+.prose p + p{margin-top:14px}
+.prose strong{color:var(--ink);font-weight:600}
 
-/* domain grid */
-.domains{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin-top:8px}
-.domain{background:var(--panel);padding:26px 22px}
-.domain h3{color:var(--ink)}
-.domain p{font-size:15.5px;color:var(--ink-soft)}
-.methods{
-  margin-top:26px;display:flex;flex-wrap:wrap;gap:10px;
+/* domain cards */
+.domains{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px}
+.domain{
+  background:var(--bg-card);border:1px solid var(--hair);border-radius:var(--radius);
+  padding:26px 24px;
+  transition:border-color .2s;
 }
+.domain:hover{border-color:var(--amber-dim)}
+.domain .dom-tag{
+  font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--amber);display:block;margin-bottom:12px;
+}
+.domain h3{margin-bottom:10px}
+.domain p{font-size:14.5px;color:var(--ink-soft)}
+.methods{margin-top:34px;display:flex;flex-wrap:wrap;gap:9px}
 .methods span{
-  font-family:"JetBrains Mono",monospace;font-size:12.5px;
-  border:1px solid var(--line);background:var(--panel);
-  padding:6px 12px;border-radius:999px;color:var(--ink-soft);
+  font-family:"JetBrains Mono",monospace;font-size:12px;
+  border:1px solid var(--hair);background:var(--bg-raise);
+  padding:7px 13px;border-radius:999px;color:var(--ink-soft);
 }
 
 /* tools */
+.tools{margin-top:36px;display:grid;gap:16px}
 .tool{
-  display:grid;grid-template-columns:170px 1fr;gap:22px;
-  padding:26px 0;border-top:1px solid var(--line);
+  display:grid;grid-template-columns:190px 1fr;gap:26px;
+  background:var(--bg-card);border:1px solid var(--hair);border-radius:var(--radius);
+  padding:26px 26px;transition:border-color .2s;
 }
-.tool:first-of-type{border-top:none;padding-top:8px}
+.tool:hover{border-color:var(--amber-dim)}
 .tool .meta{
-  font-family:"JetBrains Mono",monospace;font-size:12.5px;color:var(--ink-soft);
-  display:flex;flex-direction:column;gap:6px;
+  font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--ink-soft);
+  display:flex;flex-direction:column;gap:8px;
 }
-.tool .meta .tag{color:var(--copper)}
-.tool p{font-size:15.5px;color:var(--ink-soft);max-width:60ch}
-.tool h3 a{color:var(--ink);border-bottom-color:transparent}
-.tool h3 a:hover{color:var(--corona);border-bottom-color:var(--corona-dim)}
+.tool .meta .tag{color:var(--amber)}
+.tool h3{margin-bottom:8px}
+.tool h3 a{color:var(--ink)}
+.tool h3 a:hover{color:var(--amber)}
+.tool p{font-size:14.5px;color:var(--ink-soft);max-width:62ch}
 
 /* experience */
-.xp{list-style:none}
+.xp{list-style:none;margin-top:36px;border-top:1px solid var(--hair)}
 .xp li{
-  display:grid;grid-template-columns:170px 1fr;gap:22px;
-  padding:18px 0;border-top:1px solid var(--line);
+  display:grid;grid-template-columns:190px 1fr;gap:26px;
+  padding:24px 4px;border-bottom:1px solid var(--hair);
+  transition:background .2s;
 }
-.xp li:first-child{border-top:none}
-.xp .when{font-family:"JetBrains Mono",monospace;font-size:12.5px;color:var(--ink-soft);padding-top:3px}
-.xp .role{font-family:"Archivo",sans-serif;font-weight:650;font-size:16.5px}
-.xp .org{color:var(--ink-soft);font-size:15.5px}
+.xp li:hover{background:var(--bg-raise)}
+.xp .when{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--amber);padding-top:4px}
+.xp .role{font-family:"Archivo",sans-serif;font-weight:600;font-size:16.5px;color:var(--ink)}
+.xp .org{color:var(--ink-soft);font-size:14.5px}
 
 /* background */
-.creds{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:8px}
-.creds ul{list-style:none}
-.creds li{padding:10px 0;border-top:1px solid var(--line);font-size:15.5px;color:var(--ink-soft)}
-.creds li:first-child{border-top:none}
-.creds li strong{color:var(--ink);font-weight:600}
-.creds h3{margin-bottom:10px}
+.creds{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:36px}
+.cred-card{background:var(--bg-card);border:1px solid var(--hair);border-radius:var(--radius);padding:26px 24px}
+.cred-card h3{margin-bottom:16px;color:var(--amber)}
+.cred-card ul{list-style:none}
+.cred-card li{padding:11px 0;border-top:1px solid var(--hair);font-size:14.5px;color:var(--ink-soft)}
+.cred-card li:first-child{border-top:none;padding-top:0}
+.cred-card li strong{color:var(--ink);font-weight:600}
 
 /* research */
-.research p{color:var(--ink-soft)}
-.research .links{margin-top:18px;display:flex;gap:14px;flex-wrap:wrap}
-.btn{
-  display:inline-block;font-family:"JetBrains Mono",monospace;font-size:13px;
-  border:1px solid var(--ink);border-radius:var(--radius);
-  padding:10px 16px;color:var(--ink);border-bottom-width:1px;
-}
-.btn:hover{background:var(--ink);color:var(--porcelain)}
-.btn.primary{background:var(--corona);border-color:var(--corona);color:#fff}
-.btn.primary:hover{background:#3243b8}
+.research .links{margin-top:26px;display:flex;gap:14px;flex-wrap:wrap}
 
 /* footer */
-footer{padding:48px 0 64px}
-footer .foot{
-  display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
-  font-size:14.5px;color:var(--ink-soft);
-}
-footer a{color:var(--ink)}
-footer .mono{font-family:"JetBrains Mono",monospace;font-size:12.5px}
+footer{border-top:1px solid var(--hair);padding:56px 0 72px}
+.foot{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;font-size:14px;color:var(--ink-soft)}
+.foot strong{color:var(--ink);font-family:"Archivo",sans-serif;font-size:16px}
+.foot .mono{font-family:"JetBrains Mono",monospace;font-size:12px}
 
-@media (max-width:760px){
+@media (max-width:800px){
   .domains{grid-template-columns:1fr}
-  .tool,.xp li{grid-template-columns:1fr;gap:6px}
+  .tool,.xp li{grid-template-columns:1fr;gap:8px}
   .creds{grid-template-columns:1fr}
-  .nav ul{gap:14px}
+  .nav ul{gap:16px}
+  .hero{padding:64px 0 48px}
 }
 </style>
 </head>
@@ -223,7 +267,7 @@ footer .mono{font-family:"JetBrains Mono",monospace;font-size:12.5px}
 
 <header>
   <div class="wrap nav">
-    <a class="brand" href="#top">SAYED ABDULLAH SADAT</a>
+    <a class="brand" href="#top"><span class="tick">~/</span>SAYED ABDULLAH SADAT</a>
     <ul>
       <li><a href="#work">Work</a></li>
       <li><a href="#tools">Tools</a></li>
@@ -243,65 +287,71 @@ footer .mono{font-family:"JetBrains Mono",monospace;font-size:12.5px}
       <h1>I build the <span class="em">computational tools</span> that power systems work runs on.</h1>
       <p class="lede">Power markets, the transmission physics beneath them, and the DER-rich grid edge — unblocked with numerical optimization, high-performance computing, cloud infrastructure, and AI.</p>
 
-      <!-- signature: single-line diagram of the three domains -->
-      <svg class="sld" viewBox="0 0 900 150" role="img" aria-label="Single-line diagram connecting optimization and computing methods to power markets, transmission, and distribution">
-        <!-- source -->
-        <circle class="src" cx="60" cy="75" r="16"/>
-        <path class="src" d="M52 75 q4 -8 8 0 q4 8 8 0"/>
-        <text x="34" y="112">methods</text>
-        <!-- feeder to bus -->
-        <path class="branch hot" d="M76 75 H 200"/>
-        <!-- main bus -->
-        <line class="bus" x1="200" y1="20" x2="200" y2="130"/>
-        <!-- branches to three domains -->
-        <path class="branch hot" d="M200 40 H 430"/>
-        <path class="branch hot" d="M200 75 H 430"/>
-        <path class="branch hot" d="M200 110 H 430"/>
-        <!-- domain buses -->
-        <line class="bus" x1="430" y1="28" x2="430" y2="52"/>
-        <line class="bus" x1="430" y1="63" x2="430" y2="87"/>
-        <line class="bus" x1="430" y1="98" x2="430" y2="122"/>
-        <circle class="node" cx="430" cy="40" r="3.5"/>
-        <circle class="node" cx="430" cy="75" r="3.5"/>
-        <circle class="node" cx="430" cy="110" r="3.5"/>
-        <text x="446" y="44">power markets — bidding, clearing, congestion</text>
-        <text x="446" y="79">transmission — operations &amp; planning</text>
-        <text x="446" y="114">grid edge — microgrids, DERs &amp; VPPs</text>
-      </svg>
+      <div class="sld-frame">
+        <span class="frame-label">fig. 01 — single-line diagram</span>
+        <svg class="sld" viewBox="0 0 900 150" role="img" aria-label="Single-line diagram connecting optimization and computing methods to power markets, transmission, and the grid edge">
+          <!-- source -->
+          <circle class="src" cx="60" cy="75" r="16"/>
+          <path class="src" d="M52 75 q4 -8 8 0 q4 8 8 0"/>
+          <text x="34" y="112">methods</text>
+          <!-- feeder to bus -->
+          <path class="branch hot" d="M76 75 H 200"/>
+          <!-- main bus -->
+          <line class="bus" x1="200" y1="20" x2="200" y2="130"/>
+          <!-- branches to three domains -->
+          <path class="branch hot" d="M200 40 H 430"/>
+          <path class="branch hot" d="M200 75 H 430"/>
+          <path class="branch hot" d="M200 110 H 430"/>
+          <!-- domain buses -->
+          <line class="bus" x1="430" y1="28" x2="430" y2="52"/>
+          <line class="bus" x1="430" y1="63" x2="430" y2="87"/>
+          <line class="bus" x1="430" y1="98" x2="430" y2="122"/>
+          <circle class="node" cx="430" cy="40" r="3.5"/>
+          <circle class="node" cx="430" cy="75" r="3.5"/>
+          <circle class="node" cx="430" cy="110" r="3.5"/>
+          <text class="hl" x="446" y="44">power markets — bidding, clearing, congestion</text>
+          <text class="hl" x="446" y="79">transmission — operations &amp; planning</text>
+          <text class="hl" x="446" y="114">grid edge — microgrids, DERs &amp; VPPs</text>
+        </svg>
+      </div>
 
       <div class="affil" aria-label="Institutional background">
         <span class="affil-label">Trained &amp; worked at</span>
-        <span>Argonne National Laboratory</span>
-        <span>U.S. DOE ARPA-E (GO Competition)</span>
-        <span>Fulbright Program</span>
-        <span>University of California San Diego</span>
-        <span>The University of Utah</span>
-        <span>University of South Florida</span>
+        <span class="plate">Argonne National Laboratory</span>
+        <span class="plate">U.S. DOE ARPA-E (GO Competition)</span>
+        <span class="plate">Fulbright Program</span>
+        <span class="plate">University of California San Diego</span>
+        <span class="plate">The University of Utah</span>
+        <span class="plate">University of South Florida</span>
       </div>
     </div>
   </div>
 
   <!-- WHAT I DO -->
   <section id="work">
-    <div class="wrap">
-      <div class="sec-label">01 — What I work on</div>
-      <h2>Research and development, in service of working software</h2>
+    <div class="wrap prose">
+      <div class="sec-head"><span class="sec-num">01</span><h2>Research and development, in service of working software</h2></div>
       <p>My focus is the gap between what power systems research knows and what practitioners can actually run. I take methods from optimization, operations research, and machine learning and turn them into engines — power flow, contingency analysis, market simulation, network-model tooling — that are fast enough, scalable enough, and dependable enough to carry commercial decisions.</p>
       <p>Increasingly, my work sits a layer above the engines: designing <strong>decision systems</strong> for problems that unfold under uncertainty. That means physics-based scenario simulation as the foundation, stochastic optimization and sequential decision modeling as the architecture, and AI applied where it genuinely earns its place — forecasting the inputs and correcting the residuals — rather than replacing the physics. The goal is the same across markets, operations, and planning: turn a hard, uncertain problem into a repeatable, auditable pipeline that decision-makers can trust.</p>
-      <div class="domains" style="margin-top:30px">
+
+      <div class="domains">
         <div class="domain">
+          <span class="dom-tag">Deepest domain</span>
           <h3>Power markets</h3>
-          <p>My deepest domain. Market clearing, congestion analysis, CRR/FTR and virtual markets, and optimal bidding — grounded in physics-based network models rather than price series alone.</p>
+          <p>Market clearing, congestion analysis, CRR/FTR and virtual markets, and optimal bidding — grounded in physics-based network models rather than price series alone.</p>
         </div>
         <div class="domain">
+          <span class="dom-tag">The physics underneath</span>
           <h3>Transmission systems</h3>
-          <p>The physics under the markets, and a practice in its own right: N-1 contingency screening, transfer capability and deliverability, interconnection studies, and security-constrained scheduling at interconnection scale.</p>
+          <p>A practice in its own right: N-1 contingency screening, transfer capability and deliverability, interconnection studies, and security-constrained scheduling at interconnection scale.</p>
         </div>
         <div class="domain">
+          <span class="dom-tag">Supporting thread</span>
           <h3>The grid edge</h3>
-          <p>A supporting thread from my Argonne and postdoc years: voltage regulation in microgrids, DERs, and VPPs — increasingly what transmission studies and market models must account for.</p>
+          <p>From my Argonne and postdoc years: voltage regulation in microgrids, DERs, and VPPs — increasingly what transmission studies and market models must account for.</p>
         </div>
       </div>
+
       <div class="methods" aria-label="Methods and stack">
         <span>numerical optimization</span><span>stochastic &amp; sequential decision modeling</span><span>scenario simulation</span><span>parallel &amp; HPC</span><span>cloud-scale execution</span><span>ML for forecasting &amp; residual correction</span><span>Julia</span><span>Python</span><span>C++</span><span>Gurobi · IPOPT · MOSEK</span>
       </div>
@@ -311,46 +361,47 @@ footer .mono{font-family:"JetBrains Mono",monospace;font-size:12.5px}
   <!-- TOOLS -->
   <section id="tools">
     <div class="wrap">
-      <div class="sec-label">02 — Selected tools &amp; projects</div>
-      <h2>Things I've built</h2>
+      <div class="sec-head"><span class="sec-num">02</span><h2>Things I've built</h2></div>
 
-      <div class="tool">
-        <div class="meta"><span>2024 — present</span><span class="tag">commercial · Python</span></div>
-        <div>
-          <h3><a href="https://www.powersense.io/psflow.html">PsFlow — transmission study automation</a></h3>
-          <p>A scriptable Python engine for DC-linearized contingency screening, transfer limits, and worst-case transfer limits, with PSS/E-compatible I/O and parallel scenario batching. Built and benchmarked for parity with leading commercial tools; the flagship product of Powersense, the independent software company I founded.</p>
+      <div class="tools">
+        <div class="tool">
+          <div class="meta"><span>2024 — present</span><span class="tag">commercial · Python</span></div>
+          <div>
+            <h3><a href="https://www.powersense.io/psflow.html">PsFlow — transmission study automation</a></h3>
+            <p>A scriptable Python engine for DC-linearized contingency screening, transfer limits, and worst-case transfer limits, with PSS/E-compatible I/O and parallel scenario batching. Built and benchmarked for parity with leading commercial tools; the flagship product of Powersense, the independent software company I founded.</p>
+          </div>
         </div>
-      </div>
 
-      <div class="tool">
-        <div class="meta"><span>2022 — present</span><span class="tag">proprietary · production</span></div>
-        <div>
-          <h3>Industrial power flow &amp; market analytics engine</h3>
-          <p>Led development of an in-house power flow platform for modeling power outcomes in wholesale markets — achieving a 150× speedup in fundamental power flow computation and higher accuracy in identifying congestion-driving outages than established commercial alternatives. Includes state estimation, SCUC/ED, and market-clearing simulation.</p>
+        <div class="tool">
+          <div class="meta"><span>2022 — present</span><span class="tag">proprietary · production</span></div>
+          <div>
+            <h3>Industrial power flow &amp; market analytics engine</h3>
+            <p>Led development of an in-house power flow platform for modeling power outcomes in wholesale markets — achieving a 150× speedup in fundamental power flow computation and higher accuracy in identifying congestion-driving outages than established commercial alternatives. Includes state estimation, SCUC/ED, and market-clearing simulation.</p>
+          </div>
         </div>
-      </div>
 
-      <div class="tool">
-        <div class="meta"><span>2022 — present</span><span class="tag">proprietary · data infrastructure</span></div>
-        <div>
-          <h3>ISO network-model ingestion at scale</h3>
-          <p>Scalable CIM parsing and node-breaker to bus-branch conversion across every major U.S. ISO (ERCOT, MISO, PJM, SPP), replacing workflows that previously depended on Siemens PSS®ODMS — with greater flexibility and throughput.</p>
+        <div class="tool">
+          <div class="meta"><span>2022 — present</span><span class="tag">proprietary · data infrastructure</span></div>
+          <div>
+            <h3>ISO network-model ingestion at scale</h3>
+            <p>Scalable CIM parsing and node-breaker to bus-branch conversion across every major U.S. ISO (ERCOT, MISO, PJM, SPP), replacing workflows that previously depended on Siemens PSS®ODMS — with greater flexibility and throughput.</p>
+          </div>
         </div>
-      </div>
 
-      <div class="tool">
-        <div class="meta"><span>2020 — 2022</span><span class="tag">open source · Julia</span></div>
-        <div>
-          <h3>ActiveSetMethods.jl — nonlinear optimization solver</h3>
-          <p>A Julia continuous nonlinear solver using a sequential linear programming line-search algorithm, developed at Argonne National Laboratory and applied to AC optimal power flow.</p>
+        <div class="tool">
+          <div class="meta"><span>2020 — 2022</span><span class="tag">open source · Julia</span></div>
+          <div>
+            <h3>ActiveSetMethods.jl — nonlinear optimization solver</h3>
+            <p>A Julia continuous nonlinear solver using a sequential linear programming line-search algorithm, developed at Argonne National Laboratory and applied to AC optimal power flow.</p>
+          </div>
         </div>
-      </div>
 
-      <div class="tool">
-        <div class="meta"><span>2017 — 2022</span><span class="tag">research · ARPA-E</span></div>
-        <div>
-          <h3>Grid Optimization Competition solvers</h3>
-          <p>Computational algorithms for Challenges 1 and 2 of the U.S. Department of Energy's ARPA-E Grid Optimization Competition — security-constrained optimal power flow under competition-scale time and accuracy constraints.</p>
+        <div class="tool">
+          <div class="meta"><span>2017 — 2022</span><span class="tag">research · ARPA-E</span></div>
+          <div>
+            <h3>Grid Optimization Competition solvers</h3>
+            <p>Computational algorithms for Challenges 1 and 2 of the U.S. Department of Energy's ARPA-E Grid Optimization Competition — security-constrained optimal power flow under competition-scale time and accuracy constraints.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -359,8 +410,7 @@ footer .mono{font-family:"JetBrains Mono",monospace;font-size:12.5px}
   <!-- EXPERIENCE -->
   <section id="experience">
     <div class="wrap">
-      <div class="sec-label">03 — Experience</div>
-      <h2>Where I've done it</h2>
+      <div class="sec-head"><span class="sec-num">03</span><h2>Where I've done it</h2></div>
       <ul class="xp">
         <li>
           <span class="when">2022 — present</span>
@@ -371,7 +421,7 @@ footer .mono{font-family:"JetBrains Mono",monospace;font-size:12.5px}
           <span><span class="role">Founder &amp; Principal</span><br><span class="org">Powersense — independent power-systems software; transmission planning and interconnection study consulting</span></span>
         </li>
         <li>
-          <span class="when">2025</span>
+          <span class="when">2022 — 2025</span>
           <span><span class="role">Postdoctoral Scholar, Mechanical &amp; Aerospace Engineering</span><br><span class="org">University of California San Diego — voltage regulation in microgrids, DERs, and virtual power plants</span></span>
         </li>
         <li>
@@ -389,10 +439,9 @@ footer .mono{font-family:"JetBrains Mono",monospace;font-size:12.5px}
   <!-- BACKGROUND -->
   <section id="background">
     <div class="wrap">
-      <div class="sec-label">04 — Background</div>
-      <h2>Education &amp; recognition</h2>
+      <div class="sec-head"><span class="sec-num">04</span><h2>Education &amp; recognition</h2></div>
       <div class="creds">
-        <div>
+        <div class="cred-card">
           <h3>Education</h3>
           <ul>
             <li><strong>Ph.D., Electrical &amp; Computer Engineering</strong> — The University of Utah (4.0). Dissertation: <em>Towards Computationally Tractable Optimal Power Flow</em></li>
@@ -401,7 +450,7 @@ footer .mono{font-family:"JetBrains Mono",monospace;font-size:12.5px}
             <li><strong>Micro MBA</strong> — University of California San Diego · <strong>PMP®</strong> certified</li>
           </ul>
         </div>
-        <div>
+        <div class="cred-card">
           <h3>Honors</h3>
           <ul>
             <li><strong>Fulbright Scholarship</strong> — U.S. Department of State</li>
@@ -416,9 +465,8 @@ footer .mono{font-family:"JetBrains Mono",monospace;font-size:12.5px}
 
   <!-- RESEARCH -->
   <section id="research" class="research">
-    <div class="wrap">
-      <div class="sec-label">05 — Research &amp; writing</div>
-      <h2>Publications</h2>
+    <div class="wrap prose">
+      <div class="sec-head"><span class="sec-num">05</span><h2>Publications</h2></div>
       <p>My research sits at the intersection of power engineering, operations research, economics, and high-performance computing — with an emphasis on optimal power flow tractability, market design, and DER integration. The complete, always-current list lives on Google Scholar; the tools above are where the research goes to work.</p>
       <div class="links">
         <a class="btn primary" href="https://scholar.google.com/citations?user=YOUR_SCHOLAR_ID">Google Scholar →</a>
